@@ -854,6 +854,8 @@ Return only the JSON, no other text.`
 
       clearInterval(interval);
       const result = await response.json();
+      if (result.error) throw new Error(result.error.message);
+      if (!result.content || !result.content[0]) throw new Error("API error: " + JSON.stringify(result));
       const text = result.content[0].text.trim();
       const clean = text.replace(/```json|```/g, '').trim();
       extractedData = JSON.parse(clean);
